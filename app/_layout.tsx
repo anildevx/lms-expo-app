@@ -1,24 +1,48 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { useEffect } from 'react';
+import * as Sentry from '@sentry/react-native';
+import { AppProviders } from '../src/lib/providers';
+import { useThemeStore } from '../src/lib/themeStore';
+import { initializeNotifications, setupNotificationListeners } from '../src/services/notificationService';
+import { OfflineBanner } from '../src/components/common';
+import { initSentry } from '../src/lib/sentry';
+import '../src/styles/global.css';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+// Initialize Sentry
+initSentry();
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+function RootLayout() {
+  const { loadThemePreference, themeMode } = useThemeStore();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  useEffect(() => {
+    loadThemePreference();
+
+    // Initialize notifications
+    initializeNotifications();
+
+    // Setup notification listeners
+    const cleanup = setupNotificationListeners();
+
+    return cleanup;
+  }, []);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+    <AppProviders>
+      <OfflineBanner />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: true, title: 'Modal' }} />
       </Stack>
       <StatusBar style="auto" />
-    </ThemeProvider>
+    </AppProviders>
   );
 }
+
+export default Sentry.wrap(RootLayout);
