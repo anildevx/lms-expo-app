@@ -55,7 +55,7 @@ export default function BookmarksScreen() {
           No Bookmarks Yet
         </Text>
         <Text className="text-sm text-text-muted-light dark:text-text-muted-dark text-center">
-          Start bookmarking courses you're interested in to see them here
+          Start bookmarking courses you&apos;re interested in to see them here
         </Text>
       </View>
     );

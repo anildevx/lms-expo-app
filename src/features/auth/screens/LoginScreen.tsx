@@ -170,7 +170,7 @@ export default function LoginScreen() {
               activeOpacity={0.7}
             >
               <Text className="text-base text-text-muted-light dark:text-text-muted-dark mr-1">
-                Don't have an account?
+                Don&apos;t have an account?
               </Text>
               <Text className="text-base text-primary font-bold">
                 Sign Up
