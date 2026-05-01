@@ -244,7 +244,7 @@ src/
 1. **Clone the repository**
    ```bash
    git clone https://github.com/anildevx/lms-expo-app.git
-   cd Learnly
+   cd lms-expo-app
    ```
 
 2. **Install dependencies**
